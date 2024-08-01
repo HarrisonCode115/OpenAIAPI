@@ -9,8 +9,18 @@
 </head>
 
 <body>
-    <div>
-        <h1 id = "heading">Chat with GPT</h1>
+    <div class="sidebar">
+        <h2>Conversations</h2>
+        <ul id="conversation-list">
+            <!-- Conversation IDs will be added here dynamically -->
+        </ul>
+        <button onclick="addNewConversation()">Add New Conversation</button>
+    </div>
+
+
+    <div class="main">
+        <h1>Chat with GPT</h1>
+        <h2 id = "current-conversation">Current Conversation: 1</h2>
         <div id="chat-box"></div>
         <input type="text" id="user-input" placeholder="Type your message here">
         <button onclick="sendMessage()">Send</button>
