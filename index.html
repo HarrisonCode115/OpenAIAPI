@@ -5,21 +5,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="static/index.css">
-    <title>Chat with GPT</title>
+    <title>AIChat</title>
 </head>
 
 <body>
     <div class="sidebar">
+        
+        <div class="toggle-switch">
+            <label>
+                <input type="checkbox" id="ai-toggle" onchange="toggleAI()">
+                <span class="slider"></span>
+            </label>
+            <br>
+            <span id="ai-label">GPT</span>
+        </div>
+
+
         <h2>Conversations</h2>
         <ul id="conversation-list">
             <!-- Conversation IDs will be added here dynamically -->
         </ul>
         <button onclick="addNewConversation()">Add New Conversation</button>
+    
     </div>
 
 
     <div class="main">
-        <h1>Chat with GPT</h1>
+        <h1>AIChat</h1>
         <h2 id = "current-conversation">Current Conversation: 1</h2>
         <div id="chat-box"></div>
         <input type="text" id="user-input" placeholder="Type your message here">
