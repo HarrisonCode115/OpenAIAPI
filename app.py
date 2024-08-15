@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 from openai import OpenAI
+import anthropic
 import openai
 client = OpenAI()
 
@@ -44,17 +45,31 @@ def chat():
 
     try:
         assistant_message = 'Error, no message response created.'
+        #GPT Response
         if(ai_model == 'gpt'):
-
+            client = OpenAI()
             response = client.chat.completions.create(
                 model="gpt-4o-mini",
                 messages=conversation
             )
-
             assistant_message = response.choices[0].message.content
+        
+        #Claude Response
         elif(ai_model == 'claude'):
-            assistant_message = "Claude is still under development, please try again at a later date!"
-        ## add if model is claude ai
+
+            claudeConversation = conversation
+            claudeConversation = claudeConversation[1:]
+            client = anthropic.Anthropic()
+            
+            message = client.messages.create(
+            model="claude-3-opus-20240229",
+            max_tokens=1000,
+            temperature=0.0,
+            system= "You are a high level AI, with a large breadth of knowledge on many topics. You shall answer any questions to the best of your ability, using the user's language of choice. Only state true facts. Do not speculate.",
+            messages = claudeConversation
+            )
+            assistant_message = message.content[0].text
+        
         conversation.append({"role": "assistant", "content": assistant_message})
 
         return jsonify({'message': assistant_message})

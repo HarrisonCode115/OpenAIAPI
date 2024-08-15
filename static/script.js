@@ -1,5 +1,6 @@
 let currentConversationId = null;
-let conversationCounter = 0;
+let gptConvCount = 0
+let claudeConvCount = 0
 let isLoading = false
 let aiModel = 'gpt'
 
@@ -13,7 +14,16 @@ let conversations = {
 
 
 function addNewConversation() {
-    conversationCounter++;
+    let conversationCounter = 0
+    if(aiModel == "gpt"){
+        gptConvCount++
+        conversationCounter = gptConvCount
+    }
+    else{
+        claudeConvCount++
+        conversationCounter = claudeConvCount
+    }
+
     const conversationId = `conversation-${conversationCounter}-${aiModel}`;
     const conversationList = document.getElementById('conversation-list');
     
