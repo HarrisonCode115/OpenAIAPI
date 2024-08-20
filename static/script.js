@@ -116,19 +116,22 @@ document.getElementById('user-input').addEventListener('keypress', function(even
 
 
 
-function toggleAI() {
-    const aiToggle = document.getElementById('ai-toggle');
-    const aiLabel = document.getElementById('ai-label');
+function changeAIType() {
+    const aiSelected = document.getElementById('ai-type');
 
-    if (aiToggle.checked) {
-        aiModel = 'claude'; // Switch to Claude AI
-        aiLabel.textContent = 'Claude AI';
-    } else {
-        aiModel = 'gpt'; // Switch to GPT
-        aiLabel.textContent = 'GPT';
+    aiModel = aiSelected.value
+    let title = document.getElementById('title')
+    title.textContent = "AIChat - "+aiModel.toUpperCase()
+
+    //Makes conversation if one does not already exist
+    if(conversations[aiModel].length == 0){
+        addNewConversation()
     }
 
     updateConversationList()
+    lastChat = conversations[aiModel].length-1
+    chatId = conversations[aiModel][lastChat]
+    selectConversation(chatId)
 }
 
 
