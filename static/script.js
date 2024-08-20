@@ -83,6 +83,7 @@ async function sendMessage() {
 
     //Disable text field until response
     document.getElementById('user-input').disabled = true
+    document.getElementById('ai-type').disabled = true
     isLoading = true
 
     if (userInput.trim() === '' || !currentConversationId) return;
@@ -102,6 +103,7 @@ async function sendMessage() {
     const modelAsString = aiModel.toUpperCase()
     chatBox.innerHTML += `<p><strong>${modelAsString}</strong> ${data.message}</p>`;
     document.getElementById('user-input').disabled = false
+    document.getElementById('ai-type').disabled = false
     isLoading = false
 
 }
