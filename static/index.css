@@ -2,16 +2,21 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #f0f0f0;
     margin: 0;
-    padding: 0;
+    padding: 20px;  /* Added padding for page margins */
     display: flex;
+    justify-content: center;
     height: 100vh;
+    box-sizing: border-box;
 }
 
 .main {
     flex: 1;
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    max-width: 900px;  /* Set a max-width for the main content */
+    width: 100%;
+    margin-left: 270px;  /* Ensure enough space for the sidebar */
+    padding-right: 20px;  /* Add right padding to the main content */
 }
 
 #chat-box {
@@ -19,9 +24,14 @@ body {
     overflow-y: auto;
     padding: 20px;
     background-color: #fff;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
     margin-bottom: 20px;
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+#chat-box:hover {
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
 }
 
 .input-area {
@@ -29,6 +39,7 @@ body {
     padding: 20px;
     background-color: #fff;
     border-top: 1px solid #e0e0e0;
+    border-radius: 0 0 10px 10px;
 }
 
 #user-input {
@@ -37,6 +48,12 @@ body {
     border: 1px solid #ccc;
     border-radius: 20px;
     margin-right: 10px;
+    transition: border-color 0.3s;
+}
+
+#user-input:focus {
+    border-color: #007bff;
+    outline: none;
 }
 
 button {
@@ -46,13 +63,13 @@ button {
     border: none;
     border-radius: 20px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, box-shadow 0.3s;
 }
 
 button:hover {
     background-color: #0056b3;
+    box-shadow: 0 4px 10px rgba(0, 91, 204, 0.3);
 }
-
 
 .message {
     max-width: 70%;
@@ -82,18 +99,30 @@ button:hover {
     margin-top: 5px;
 }
 
-
-
 .ai-selector {
     margin-top: 20px;
 }
 
 .ai-selector select {
     width: 100%;
-    padding: 5px;
+    padding: 10px;
+    border: 1px solid #ccc;
     border-radius: 5px;
+    background-color: #fff;
+    appearance: none;
+    background-image: url('data:image/svg+xml;base64,...');  /* Custom dropdown arrow */
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 12px;
+    cursor: pointer;
+    transition: border-color 0.3s, box-shadow 0.3s;
 }
 
+.ai-selector select:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0,123,255,0.5);
+}
 
 .sidebar {
     width: 250px;
@@ -103,6 +132,9 @@ button:hover {
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
     height: 100vh;
     overflow-y: auto;
+    position: fixed;  /* Sidebar stays fixed on the left side */
+    left: 0;
+    top: 0;
 }
 
 .sidebar h2 {
@@ -133,9 +165,17 @@ button:hover {
 .sidebar button {
     width: 100%;
     margin-top: 20px;
+    padding: 10px;
+    background-color: #16a085;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
 }
 
-
+.sidebar button:hover {
+    background-color: #1abc9c;
+}
 
 @media (max-width: 768px) {
     body {
@@ -145,9 +185,12 @@ button:hover {
     .sidebar {
         width: 100%;
         height: auto;
+        position: relative;
     }
 
     .main {
+        margin-left: 0;
+        padding-right: 0;  /* Remove padding on small screens */
         height: calc(100vh - 200px);
     }
 }

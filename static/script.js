@@ -13,6 +13,7 @@ let conversations = {
 };
 
 
+//Adds a new conversation based on the AI Model currently chosen
 function addNewConversation() {
     let conversationCounter = 0
     if(aiModel == "gpt"){
@@ -24,6 +25,7 @@ function addNewConversation() {
         conversationCounter = claudeConvCount
     }
 
+    //Creates new conversation on front end
     const conversationId = `conversation-${conversationCounter}-${aiModel}`;
     const conversationList = document.getElementById('conversation-list');
     
@@ -33,10 +35,12 @@ function addNewConversation() {
     conversationList.appendChild(listItem);
 
     conversations[aiModel].push(conversationId)
+
     // Automatically select the new conversation
     selectConversation(conversationId);
 }
 
+//Selects the conversation by ID
 async function selectConversation(conversationId) {
     //If the chat is already loading, dont allow conversation change.
     if(isLoading){return}
@@ -45,6 +49,7 @@ async function selectConversation(conversationId) {
     const chatBox = document.getElementById('chat-box');
     chatBox.innerHTML = ''; // Clear the chat box
     const [convId, model] = conversationId.split('-').slice(1);
+    //Gets response from back end (python flask server)
     try {
         const response = await fetch(`http://127.0.0.1:5900/conversations/${convId}?model=${model}`);
         const conversation = await response.json();
@@ -61,6 +66,7 @@ async function selectConversation(conversationId) {
                 chatBox.innerHTML += `<p><strong>${role}:</strong> ${message.content}</p>`;
             }
         });
+        //Works out the correct conversation ID
         hyphenLocation = conversationId.indexOf('-')
         conversationNumber = conversationId.substring(hyphenLocation+1)
         hyphenLocation = conversationNumber.indexOf('-')
@@ -99,9 +105,19 @@ async function sendMessage() {
              ai_model:aiModel}),
     });
 
+    //Sends the response to the front end to be displayed
     const data = await response.json();
-    const modelAsString = aiModel.toUpperCase()
-    chatBox.innerHTML += `<p><strong>${modelAsString}</strong> ${data.message}</p>`;
+    let modelAsString = ""
+    if (aiModel == "gpt"){
+        modelAsString = "GPT"
+    }
+    else{
+        let firstChar = aiModel.charAt(0).toUpperCase()
+        let remainingChars = aiModel.slice(1)
+        modelAsString = firstChar + remainingChars
+    }
+    
+    chatBox.innerHTML += `<p><strong>${modelAsString}</strong>: ${data.message}</p>`;
     document.getElementById('user-input').disabled = false
     document.getElementById('ai-type').disabled = false
     isLoading = false
@@ -123,7 +139,16 @@ function changeAIType() {
 
     aiModel = aiSelected.value
     let title = document.getElementById('title')
-    title.textContent = "AIChat - "+aiModel.toUpperCase()
+    let modelAsString = ""
+    if (aiModel == "gpt"){
+        modelAsString = "GPT"
+    }
+    else{
+        let firstChar = aiModel.charAt(0).toUpperCase()
+        let remainingChars = aiModel.slice(1)
+        modelAsString = firstChar + remainingChars
+    }
+    title.textContent = "AIChat - "+modelAsString
 
     //Makes conversation if one does not already exist
     if(conversations[aiModel].length == 0){
